@@ -1,17 +1,95 @@
+import React from 'react';
+import { render, screen, waitFor } from '@testing-library/react';
+import Display from '../Display';
+import userEvent from '@testing-library/dom';
+import mockFetchShow from '../../api/fetchShow';
+jest.mock('../../api/fetchShow');
 
+test('renders without and props passed', () => {
+    render(<Display />);
+    const altText = screen.getAllByAltText('header image');
+    expect(altText).toBeDefined();
+});
 
+test('when the fetch button is pressed, the show component will display', async () => {
+    mockFetchShow/mockResolvedValueOnce({
+        name: 'test',
+        image: '',
+        summary: '',
+        seasons: [
+            {
+                id: 1,
+                name: 'Season 1',
+                episodes: [],
+            },
+            {
+                id: 2,
+                name: 'Season 2',
+                episodes: [],
+            },
+            {
+                id: 3,
+                name: 'Season 3',
+                episodes: [],
+            },
+            {
+                id: 4,
+                name: 'Season 4',
+                episodes: [],
+            },
+        ],
+    });
+    render(<Display />);
 
+    const btn = screen.getByRole('button');
+    expect(btn).toBeDefined()
+    userEvent.click(btn);
 
+    await waitFor(() => {
+        const show = screen.getByTestId('show-container')
+        expect(show).toBeDefined();
+    });
+});
 
+test('when the fetch button is pressed, the show component will display', async() => {
+    mockFetchShow.mockResolvedValueOnce({
+        name: 'test',
+        image: '',
+        summary: '',
+        seasons: [
+            {
+                id: 1,
+                name: 'Season 1',
+                episodes: [],
+            },
+            {
+                id: 2,
+                name: 'Season 2',
+                episodes: [],
+            },
+            {
+                id: 3,
+                name: 'Season 3',
+                episodes: [],
+            },
+            {
+                id: 4,
+                name: 'Season 4',
+                episodes: [],
+            },
+        ],
+    });
+    render(<Display />);
 
+    const btn = screen.getByRole('button');
+    expect(btn).toBeDefined()
+    userEvent.click(btn);
 
-
-
-
-
-
-
-
+    await waitFor(() => {
+        const seasons = screen.getAllByTestId('season-option')
+        expect(seasons).toHaveLength(4);
+    });
+});
 
 ///Tasks:
 //1. Add in nessisary imports and values to establish the testing suite.
